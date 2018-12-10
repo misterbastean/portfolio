@@ -5,7 +5,7 @@ const config = {
     url: 'ds241493.mlab.com:41493/recipe-app'
   },
   session: {
-    secret: ''
+    secret: 'Holy carp I cantt bielve I forgetted!'
   }
 }
 

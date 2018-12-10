@@ -19,7 +19,7 @@
           <a class="dropdown-item" href="/mealapp/recipes/categories/none">No Protein</a>
         </div>
       </li>
-      <% if (true) { %> <!-- Update when authentication is added -->
+      <% if (currentUser) { %>
         <li class="nav-item active">
           <a class="nav-link" href="/mealapp/recipes/new">Add Recipe</a>
         </li>
@@ -32,10 +32,10 @@
     </form>
     <ul class="nav navbar-nav">
       <li><a href='/mealapp/cart' class='nav-link active mr-3'>My Cart</a></li>
-      <% if (false) { %> <!-- Update when authentication is added -->
-        <li><a href="/login" class="nav-link active">Login</a></li>
+      <% if (!currentUser) { %> <!-- Update when authentication is added -->
+        <li><a href="/mealapp/login" class="nav-link active">Login</a></li>
       <% } else { %>
-        <li><span class='navbar-text'>Signed In As: <%= 'currentUser' %></span></li> <!-- Update when authentication is added -->
+        <li><span class='navbar-text'>Signed In As: <%= currentUser.username %></span></li> <!-- Update when authentication is added -->
         <li><a href="/mealapp/logout" class="nav-link active">Logout</a></li>
       <% } %>
       <li class="nav-item">

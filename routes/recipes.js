@@ -115,7 +115,8 @@ router.post('/login', passport.authenticate('local',
 ));
 
 router.get('/logout', (req, res) => {
-  res.send('You have logged out.');
+  req.logout();
+  res.redirect('/mealapp/recipes');
 });
 
 module.exports = router;
