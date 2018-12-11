@@ -16,6 +16,7 @@ const express             = require('express'),
 const teslaRoutes   = require('./routes/tesla');
 const mealAppRoutes = require('./routes/recipes');
 const indexRoutes   = require('./routes/index');
+const techRoutes    = require('./routes/techInfusion');
 
 // MethodOverride config
 app.use(methodOverride('_method'));
@@ -60,6 +61,7 @@ app.use('/public', express.static(__dirname + '/public'));
 // Use routes
 app.use('/tesla', teslaRoutes);
 app.use('/mealApp', mealAppRoutes);
+app.use('/techInfusion', techRoutes);
 app.use('/', indexRoutes);
 
 
