@@ -2,8 +2,8 @@ const express     = require('express'),
       router      = express.Router(),
       Recipe      = require('../models/recipe'),
       User        = require('../models/user'),
-      passport    = require('passport');
-      // Middleware - authentication
+      passport    = require('passport'),
+      middleware  = require('../utils/middleware');
 
 
 // ========================
@@ -96,12 +96,12 @@ router.get('/recipes/categories/:category', (req, res) => {
 });
 
 // Show new form
-router.get('/recipes/new', (req, res) => {
+router.get('/recipes/new', middleware.isLoggedIn, (req, res) => {
   res.render('mealapp/newRecipe');
 });
 
 // Add recipe to DB
-router.post('/recipes', (req, res) => {
+router.post('/recipes', middleware.isLoggedIn, (req, res) => {
   // Set correct imageUrl
   let imageUrl;
   if (!!req.body.imageUrl) {
@@ -162,17 +162,63 @@ router.get('/recipes/:id', (req, res) => {
 });
 
 // Show edit form
-router.get('/recipes/:id/edit', (req, res) => {
-  res.send(`This is the edit form page for recipe id of ${req.params.id}`);
+router.get('/recipes/:id/edit', middleware.isLoggedIn, (req, res) => {
+  Recipe.findById(req.params.id, (err, foundRecipe) => {
+    if (err) {
+      console.log(err);
+      req.flash('error', `Unable to show edit form. Sorry about that. :-( Error: ${err}`);
+      res.redirect('back');
+    } else {
+      res.render('mealapp/editRecipe', { recipe: foundRecipe });
+    };
+  });
 });
 
 // Update recipe in DB
-router.put('/recipes/:id', (req, res) => {
-  res.send(`This is the recipe update PUT for id of ${req.params.id}`);
+router.put('/recipes/:id', middleware.isLoggedIn, (req, res) => {
+  // Set default imageUrl if none provided
+  let imageUrl;
+  if (!!req.body.imageUrl) {
+    imageUrl = req.body.imageUrl;
+  } else {
+    imageUrl = 'https://via.placeholder.com/150';
+  }
+
+  let ingredients = [];
+  req.body.ingredients.forEach((ingredient) => {
+    ingredients.push({
+      ingredientName: `${ingredient.ingredientName} ${ingredient.ingredientUnit}`,
+      ingredientQuantity: parseInt(ingredient.ingredientQuantity)
+    });
+  });
+
+  // Build recipe object
+  let updatedRecipe = {
+    recipeName: req.body.recipeName,
+    protein: req.body.protein,
+    ingredients,
+    directions: req.body.directions,
+    imageUrl,
+    description: req.body.description,
+    prepMinutes: req.body.prepMinutes,
+    cookMinutes: req.body.cookMinutes,
+    servingNumber: req.body.servingNumber
+  }
+
+  Recipe.findByIdAndUpdate(req.params.id, updatedRecipe, (err, updatedRecipe) => {
+    if (err) {
+      console.log(err);
+      req.flash('error', `Unable to update recipe. Sorry about that. :-( ${err}`);
+      res.redirect('/mealapp/recipes/' + req.params.id);
+    } else {
+      req.flash('success', 'Recipe updated successfully!');
+      res.redirect('/mealapp/recipes/' + req.params.id);
+    };
+  });
 });
 
 // Delete
-router.delete('/recipes/:id', (req, res) => {
+router.delete('/recipes/:id', middleware.isLoggedIn, (req, res) => {
   Recipe.findByIdAndDelete(req.params.id, (err, removedRecipe) => {
     if (err) {
       console.log(err);
@@ -195,12 +241,12 @@ router.get('/cart', (req, res) => {
 // ========================
 
 // Show register form
-router.get('/register', (req, res) => {
+router.get('/register', middleware.isLoggedIn, (req, res) => {
   res.render('mealApp/register');
 });
 
 // Add new user
-router.post('/register', (req, res) => {
+router.post('/register', middleware.isLoggedIn, (req, res) => {
   const newUser = new User({username: req.body.username});
   User.register(newUser, req.body.password, (err, user) => {
     if (err) {

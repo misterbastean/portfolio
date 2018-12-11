@@ -14,14 +14,15 @@ const express             = require('express'),
 
 // Route imports
 const teslaRoutes   = require('./routes/tesla');
-const mealAppRoutes  = require('./routes/recipes');
+const mealAppRoutes = require('./routes/recipes');
+const indexRoutes   = require('./routes/index');
 
 // MethodOverride config
 app.use(methodOverride('_method'));
 
 // Mongoose setup and config
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${config.database.username}:${config.database.password}@${config.database.url}`);
+mongoose.connect(`mongodb://${config.database.username}:${config.database.password}@${config.database.url}`, {useNewUrlParser: true});
 
 // Body Parser setup
 app.use(bodyParser.urlencoded({extended: true}));
@@ -59,6 +60,7 @@ app.use('/public', express.static(__dirname + '/public'));
 // Use routes
 app.use('/tesla', teslaRoutes);
 app.use('/mealApp', mealAppRoutes);
+app.use('/', indexRoutes);
 
 
 // Listening
