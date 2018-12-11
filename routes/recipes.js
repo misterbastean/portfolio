@@ -10,10 +10,12 @@ const express     = require('express'),
 // Recipe Routes
 // ========================
 
+// Landing - currently redirecting to index
 router.get('/', (req, res) => {
   res.redirect('/mealapp/recipes');
 });
 
+// Index
 router.get('/recipes', (req, res) => {
   let pageNo = req.query.p || 1;
   let lastId = req.query.last || '';
@@ -44,6 +46,7 @@ router.get('/recipes', (req, res) => {
   };
 });
 
+// Search
 router.get('/recipes/search', (req, res) => {
   Recipe.find({$text:
     {
@@ -61,6 +64,7 @@ router.get('/recipes/search', (req, res) => {
   });
 });
 
+// Random
 router.get('/recipes/random', (req, res) => {
   Recipe.aggregate([{
     '$sample': {
@@ -78,6 +82,7 @@ router.get('/recipes/random', (req, res) => {
   })
 });
 
+// Categories
 router.get('/recipes/categories/:category', (req, res) => {
   Recipe.find({protein: req.params.category}, (err, foundRecipes) => {
     if (err) {
@@ -90,12 +95,13 @@ router.get('/recipes/categories/:category', (req, res) => {
   })
 });
 
+// Show new form
 router.get('/recipes/new', (req, res) => {
   res.render('mealapp/newRecipe');
 });
 
+// Add recipe to DB
 router.post('/recipes', (req, res) => {
-
   // Set correct imageUrl
   let imageUrl;
   if (!!req.body.imageUrl) {
@@ -142,6 +148,7 @@ router.post('/recipes', (req, res) => {
   })
 });
 
+// Show
 router.get('/recipes/:id', (req, res) => {
   Recipe.findById(req.params.id, (err, foundRecipe) => {
     if (err) {
@@ -154,14 +161,17 @@ router.get('/recipes/:id', (req, res) => {
   })
 });
 
+// Show edit form
 router.get('/recipes/:id/edit', (req, res) => {
   res.send(`This is the edit form page for recipe id of ${req.params.id}`);
 });
 
+// Update recipe in DB
 router.put('/recipes/:id', (req, res) => {
   res.send(`This is the recipe update PUT for id of ${req.params.id}`);
 });
 
+// Delete
 router.delete('/recipes/:id', (req, res) => {
   Recipe.findByIdAndDelete(req.params.id, (err, removedRecipe) => {
     if (err) {
@@ -175,6 +185,7 @@ router.delete('/recipes/:id', (req, res) => {
   })
 });
 
+// Cart
 router.get('/cart', (req, res) => {
   res.render('mealapp/cart');
 });
@@ -183,10 +194,12 @@ router.get('/cart', (req, res) => {
 // Authentication Routes
 // ========================
 
+// Show register form
 router.get('/register', (req, res) => {
   res.render('mealApp/register');
 });
 
+// Add new user
 router.post('/register', (req, res) => {
   const newUser = new User({username: req.body.username});
   User.register(newUser, req.body.password, (err, user) => {
@@ -198,10 +211,12 @@ router.post('/register', (req, res) => {
   })
 });
 
+// Show login form
 router.get('/login', (req, res) => {
   res.render('mealapp/login');
 });
 
+// Log user in
 router.post('/login', passport.authenticate('local',
   {
     successRedirect: '/mealapp/recipes',
@@ -209,6 +224,7 @@ router.post('/login', passport.authenticate('local',
   }
 ));
 
+// Logout
 router.get('/logout', (req, res) => {
   req.logout();
   res.redirect('/mealapp/recipes');
