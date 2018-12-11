@@ -13,6 +13,8 @@ const express             = require('express'),
 const teslaRoutes   = require('./routes/tesla');
 const mealAppRoutes  = require('./routes/recipes');
 
+// MethodOverride config
+app.use(methodOverride('_method'));
 
 // Mongoose setup and config
 mongoose.Promise = global.Promise;

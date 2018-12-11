@@ -45,27 +45,109 @@ router.get('/recipes', (req, res) => {
 });
 
 router.get('/recipes/search', (req, res) => {
-  res.send('This is the search page');
+  Recipe.find({$text:
+    {
+      $search: req.query.term
+    }
+  })
+  .exec((err, foundRecipes) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/mealapp/recipes');
+    } else {
+      res.render('mealApp/indexes/search', { recipes: foundRecipes });
+    };
+  });
 });
 
 router.get('/recipes/random', (req, res) => {
-  res.send('This is the random page');
+  Recipe.aggregate([{
+    '$sample': {
+      'size': 1
+    }
+  }])
+  .exec((err, foundRecipe) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/mealapp/recipes');
+    } else {
+      res.redirect(`/mealapp/recipes/${foundRecipe[0]._id}`)
+    }
+  })
 });
 
 router.get('/recipes/categories/:category', (req, res) => {
-  res.send(`This is the ${req.params.category} page.`);
+  Recipe.find({protein: req.params.category}, (err, foundRecipes) => {
+    if (err) {
+      console.log(err);
+      res.redirect('back')
+    } else {
+      res.render('mealapp/indexes/categories', { recipes: foundRecipes });
+    }
+  })
 });
 
 router.get('/recipes/new', (req, res) => {
-  res.send('This is the new recipe form page');
+  res.render('mealapp/newRecipe');
 });
 
 router.post('/recipes', (req, res) => {
-  res.send('This is the new recipe POST page');
+
+  // Set correct imageUrl
+  let imageUrl;
+  if (!!req.body.imageUrl) {
+    imageUrl = req.body.imageUrl;
+  } else {
+    imageUrl = 'https://via.placeholder.com/150';
+  }
+
+  // Create ingredients object
+  let ingredients = [];
+  req.body.ingredients.forEach((ingredient) => {
+    ingredients.push({
+      ingredientName: `${ingredient.ingredientName} ${ingredient.ingredientUnit}`,
+      ingredientQuantity: parseInt(ingredient.ingredientQuantity)
+    });
+  });
+  console.log(ingredients);
+
+  // Build recipe object
+  const newRecipe = {
+    recipeName: req.body.recipeName,
+    protein: req.body.protein,
+    ingredients: ingredients,
+    directions: req.body.directions,
+    imageUrl,
+    description: req.body.description,
+    prepMinutes: req.body.prepMinutes,
+    cookMinutes: req.body.cookMinutes,
+    servingNumber: req.body.servingNumber
+  };
+
+  // Push new recipe to database
+  Recipe.create(newRecipe, (err, recipe) => {
+    if (err) {
+      console.log(err);
+      // req.flash('error', 'Unable to add recipe.');
+      res.redirect('back');
+    } else {
+      console.log('Recipe added');
+      // req.flash('success', 'Recipe Added!');
+      console.log(recipe);
+      res.redirect('recipes');
+    }
+  })
 });
 
 router.get('/recipes/:id', (req, res) => {
-  res.send(`This is the show page for recipe with id of ${req.params.id} page`);
+  Recipe.findById(req.params.id, (err, foundRecipe) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/mealapp/recipes');
+    } else {
+      res.render('mealapp/showRecipe', { recipe: foundRecipe });
+    };
+  })
 });
 
 router.get('/recipes/:id/edit', (req, res) => {
@@ -77,7 +159,14 @@ router.put('/recipes/:id', (req, res) => {
 });
 
 router.delete('/recipes/:id', (req, res) => {
-  res.send(`This is the DELETE for id ${req.params.id}`)
+  Recipe.findByIdAndDelete(req.params.id, (err, removedRecipe) => {
+    if (err) {
+      console.log(err);
+      res.redirect('/mealapp/recipes');
+    } else {
+      res.redirect('/mealapp/recipes');
+    }
+  })
 });
 
 router.get('/cart', (req, res) => {
