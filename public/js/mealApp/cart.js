@@ -66,7 +66,7 @@ function refreshTables() {
   // Repopulate Recipes table with currentRecipes data
   currentRecipes.forEach((recipe) => {
     $('#recipes-tbody').append(`
-      <tr class='recipe-tr clickable-row' data-href='/recipes/${recipe._id}'>
+      <tr class='recipe-tr clickable-row' data-href='/mealapp/recipes/${recipe._id}'>
         <td class='delete-recipe-td'><i class='fas fa-times delete-recipe-from-toggle'></i> </td>
         <td class='recipe-td'>${recipe.recipeName}</td>
       </tr>

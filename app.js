@@ -1,3 +1,6 @@
+// TODO:
+// 1. Update cursor on cart page to make recipes at top more obviously links to users
+
 const express             = require('express'),
       app                 = express(),
       mongoose            = require('mongoose'),
@@ -39,11 +42,14 @@ passport.use(new LocalStrategy(User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// Middleware to pass currentUser to each page
+// Connect-Flash setup
+app.use(flash());
+
+// Middleware to pass currentUser and Flash to each page
 app.use((req, res, next) => {
   res.locals.currentUser = req.user;
-  // res.locals.error = req.flash('error');
-  // res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  res.locals.success = req.flash('success');
   next();
 });
 

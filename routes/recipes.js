@@ -53,6 +53,7 @@ router.get('/recipes/search', (req, res) => {
   .exec((err, foundRecipes) => {
     if (err) {
       console.log(err);
+      req.flash('error', `Unable to fetch recipes. Sorry about that. Error: ${err}`);
       res.redirect('/mealapp/recipes');
     } else {
       res.render('mealApp/indexes/search', { recipes: foundRecipes });
@@ -69,6 +70,7 @@ router.get('/recipes/random', (req, res) => {
   .exec((err, foundRecipe) => {
     if (err) {
       console.log(err);
+      req.flash('error', `Unable to fetch random recipe. Sorry about that. Error: ${err}`);
       res.redirect('/mealapp/recipes');
     } else {
       res.redirect(`/mealapp/recipes/${foundRecipe[0]._id}`)
@@ -80,6 +82,7 @@ router.get('/recipes/categories/:category', (req, res) => {
   Recipe.find({protein: req.params.category}, (err, foundRecipes) => {
     if (err) {
       console.log(err);
+      req.flash('error', `Unable to fetch category. Sorry about that. Error: ${err}`);
       res.redirect('back')
     } else {
       res.render('mealapp/indexes/categories', { recipes: foundRecipes });
@@ -128,11 +131,11 @@ router.post('/recipes', (req, res) => {
   Recipe.create(newRecipe, (err, recipe) => {
     if (err) {
       console.log(err);
-      // req.flash('error', 'Unable to add recipe.');
+      req.flash('error', 'Unable to add recipe.');
       res.redirect('back');
     } else {
       console.log('Recipe added');
-      // req.flash('success', 'Recipe Added!');
+      req.flash('success', 'Recipe Added!');
       console.log(recipe);
       res.redirect('recipes');
     }
@@ -143,6 +146,7 @@ router.get('/recipes/:id', (req, res) => {
   Recipe.findById(req.params.id, (err, foundRecipe) => {
     if (err) {
       console.log(err);
+      req.flash('error', 'Unable to find recipe with that ID.')
       res.redirect('/mealapp/recipes');
     } else {
       res.render('mealapp/showRecipe', { recipe: foundRecipe });
@@ -162,15 +166,17 @@ router.delete('/recipes/:id', (req, res) => {
   Recipe.findByIdAndDelete(req.params.id, (err, removedRecipe) => {
     if (err) {
       console.log(err);
+      req.flash('error', `Unable to delete recipe. Sorry about that. Error: ${err}`);
       res.redirect('/mealapp/recipes');
     } else {
+      req.flash('success', 'Recipe deleted successfully!');
       res.redirect('/mealapp/recipes');
     }
   })
 });
 
 router.get('/cart', (req, res) => {
-  res.send('This is my cart');
+  res.render('mealapp/cart');
 });
 
 // ========================

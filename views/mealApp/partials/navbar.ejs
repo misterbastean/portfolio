@@ -45,11 +45,11 @@
   </div>
 </nav>
 <div class="container mt-3">
-  <% if (false) { %> <!-- Update when flash is added -->
+  <% if (error && error.length > 0) { %>
     <div class="wrapper">
       <div class="alert alert-danger"><%= error %></div>
     </div>
-  <% } %><% if (false) { %> <!-- Update when flash is added -->
+  <% } %><% if (success && success.length > 0) { %> <!-- Update when flash is added -->
     <div class="wrapper">
       <div class="alert alert-success"><%= success %></div>
     </div>
