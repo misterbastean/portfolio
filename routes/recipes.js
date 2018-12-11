@@ -266,13 +266,14 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('local',
   {
     successRedirect: '/mealapp/recipes',
-    failureRedirect: '/login'
+    failureRedirect: '/mealapp/login'
   }
 ));
 
 // Logout
 router.get('/logout', (req, res) => {
   req.logout();
+  req.flash('success', 'Logged you out!')
   res.redirect('/mealapp/recipes');
 });
 
