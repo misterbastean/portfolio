@@ -58,6 +58,7 @@ app.use((req, res, next) => {
 
 // Serve public folder
 app.use('/public', express.static(path.join(__dirname + '/public')));
+app.set('views', __dirname + '/views');
 
 // Use routes
 app.use('/tesla', teslaRoutes);
