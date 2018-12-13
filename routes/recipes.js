@@ -90,14 +90,14 @@ router.get('/recipes/categories/:category', (req, res) => {
       req.flash('error', `Unable to fetch category. Sorry about that. Error: ${err}`);
       res.redirect('back')
     } else {
-      res.render('mealapp/indexes/categories', { recipes: foundRecipes });
+      res.render('mealApp/indexes/categories', { recipes: foundRecipes });
     }
   })
 });
 
 // Show new form
 router.get('/recipes/new', middleware.isLoggedIn, (req, res) => {
-  res.render('mealapp/newRecipe');
+  res.render('mealApp/newRecipe');
 });
 
 // Add recipe to DB
@@ -167,7 +167,7 @@ router.get('/recipes/:id/edit', middleware.isLoggedIn, (req, res) => {
       req.flash('error', `Unable to show edit form. Sorry about that. :-( Error: ${err}`);
       res.redirect('back');
     } else {
-      res.render('mealapp/editRecipe', { recipe: foundRecipe });
+      res.render('mealApp/editRecipe', { recipe: foundRecipe });
     };
   });
 });
@@ -231,7 +231,7 @@ router.delete('/recipes/:id', middleware.isLoggedIn, (req, res) => {
 
 // Cart
 router.get('/cart', (req, res) => {
-  res.render('mealapp/cart');
+  res.render('mealApp/cart');
 });
 
 // ========================
@@ -257,7 +257,7 @@ router.post('/register', middleware.isLoggedIn, (req, res) => {
 
 // Show login form
 router.get('/login', (req, res) => {
-  res.render('mealapp/login');
+  res.render('mealApp/login');
 });
 
 // Log user in
