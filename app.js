@@ -10,7 +10,8 @@ const express             = require('express'),
       config              = require('./config'),
       User                = require('./models/user'),
       LocalStrategy       = require('passport-local'),
-      flash               = require('connect-flash');
+      flash               = require('connect-flash'),
+      path                = require('path');
 
 // Route imports
 const teslaRoutes   = require('./routes/tesla');
@@ -56,7 +57,7 @@ app.use((req, res, next) => {
 });
 
 // Serve public folder
-app.use('/public', express.static(__dirname + '/public'));
+app.use('/public', express.static(path.join(__dirname + '/public')));
 
 // Use routes
 app.use('/tesla', teslaRoutes);
