@@ -47,9 +47,7 @@
             <%
               let splitIng = ingredient.ingredientName.split(" ");
               let unit = splitIng.pop();
-              console.log(unit);
               let ing = splitIng.join(" ");
-              console.log(ing);
               if (unit == "toTaste") {
                 unit = 'to taste';
                 ingredient.ingredientQuantity = ''

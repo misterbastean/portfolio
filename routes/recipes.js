@@ -118,7 +118,6 @@ router.post('/recipes', middleware.isLoggedIn, (req, res) => {
       ingredientQuantity: parseInt(ingredient.ingredientQuantity)
     });
   });
-  console.log(ingredients);
 
   // Build recipe object
   const newRecipe = {
@@ -142,7 +141,6 @@ router.post('/recipes', middleware.isLoggedIn, (req, res) => {
     } else {
       console.log('Recipe added');
       req.flash('success', 'Recipe Added!');
-      console.log(recipe);
       res.redirect('recipes');
     }
   })
