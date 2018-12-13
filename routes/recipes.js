@@ -154,7 +154,7 @@ router.get('/recipes/:id', (req, res) => {
       req.flash('error', 'Unable to find recipe with that ID.')
       res.redirect('/mealapp/recipes');
     } else {
-      res.render('mealapp/showRecipe', { recipe: foundRecipe });
+      res.render('mealApp/showRecipe', { recipe: foundRecipe });
     };
   })
 });
