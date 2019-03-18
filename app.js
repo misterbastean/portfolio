@@ -24,8 +24,8 @@ app.use(methodOverride('_method'));
 
 // Mongoose setup and config
 mongoose.Promise = global.Promise;
-// mongoose.connect(`mongodb://${config.database.username}:${config.database.password}@${config.database.url}`, {useNewUrlParser: true});
-mongoose.connect(`mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`, {useNewUrlParser: true});
+mongoose.connect(`mongodb://${config.database.username}:${config.database.password}@${config.database.url}`, {useNewUrlParser: true});
+// mongoose.connect(`mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`, {useNewUrlParser: true});
 
 // Body Parser setup
 app.use(bodyParser.urlencoded({extended: true}));
