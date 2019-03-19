@@ -68,11 +68,16 @@ hr {
 }
 
 #description {
-    min-height: 25em;
+  min-height: 25em;
 }
 
 #description p {
-  font-size: 2em;
+  font-size: 1.2em;
+}
+
+.description-default {
+  font-size: 2.5em;
+  text-align: center;
 }
 
 .footer {
