@@ -80,14 +80,18 @@ hr {
   text-align: center;
 }
 
+.about-me {
+  margin-bottom: 6em;
+}
+
 .footer {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* position: fixed;
+  position: fixed;
   bottom: 0;
   left: 0;
-  right: 0; */
+  right: 0;
   height: 4em;
   background-color: #5087B7;
   color: white;

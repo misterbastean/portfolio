@@ -15,7 +15,7 @@ $('.card-link').click(function(e) {
                 "<li>Using a Learning Management System (e.g. Google Classroom, Schoology, etc.)</li>" +
                 "<li>Project- or Problem-Based Learning</li>" +
                 "<li>Classroom Management in a 1:1 Environment</li>" +
-                "<li>Student Digital Creation</li>" +
+                "<li>Google Certified Educator Prep</li>" +
                 "<li>Digital Tools for Deep Text Analysis</li>" +
                 "<li>Creating Instructional Videos</li>" +
                 "<li>Or another topic specific to your needs</li>" +
@@ -35,6 +35,7 @@ $('.card-link').click(function(e) {
                 "<li>Building Capacity</li>" +
                 "<li>Digital Tools to Facilitate Stakeholder Communication</li>" +
                 "<li>Blended Learning</li>" +
+                "<li>G-Suite Administration Best Practices (for IT leaders)</li>" +
                 "<li>Or another topic specific to your needs</li>" +
               "</ul>" +
               "<p>Contact me at the email address below to start the conversation!</p>";
