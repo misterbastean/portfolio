@@ -1,17 +1,27 @@
 // TODO:
 // 1. Update cursor on cart page to make recipes at top more obviously links to users
 
+
 const express             = require('express'),
       app                 = express(),
       mongoose            = require('mongoose'),
       bodyParser          = require('body-parser'),
       methodOverride      = require('method-override'),
       passport            = require('passport'),
-      config              = require('./config'),
       User                = require('./models/user'),
       LocalStrategy       = require('passport-local'),
       flash               = require('connect-flash'),
       path                = require('path');
+
+      // Only import config if working locally.
+      let config;
+      try {
+        config            = require('./config')
+      } catch (e) {
+        console.log("config was not imported. This probably means you are not working locally.");
+        console.log(e);
+      }
+
 
 // Route imports
 const teslaRoutes   = require('./routes/tesla');
@@ -24,8 +34,12 @@ app.use(methodOverride('_method'));
 
 // Mongoose setup and config
 mongoose.Promise = global.Promise;
-mongoose.connect(`mongodb://${config.database.username}:${config.database.password}@${config.database.url}`, {useNewUrlParser: true});
-// mongoose.connect(`mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`, {useNewUrlParser: true});
+try {
+  mongoose.connect(`mongodb://${config.database.username}:${config.database.password}@${config.database.url}`, {useNewUrlParser: true});
+
+} catch(e) {
+  mongoose.connect(`mongodb://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@${process.env.DB_URL}`, {useNewUrlParser: true});
+}
 
 // Body Parser setup
 app.use(bodyParser.urlencoded({extended: true}));
@@ -35,11 +49,21 @@ app.use(bodyParser.json());
 app.set('view engine', 'ejs');
 
 // Authentication
-app.use(require('express-session')({
-  secret: config.session.secret,
-  resave: false,
-  saveUninitialized: false
-}));
+try {
+  app.use(require('express-session')({
+    secret: config.session.secret,
+    resave: false,
+    saveUninitialized: false
+  }));
+} catch(e) {
+  app.use(require('express-session')({
+    secret: process.env.ES_SECRET,
+    resave: false,
+    saveUninitialized: false
+  }));
+}
+
+
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(new LocalStrategy(User.authenticate()));
