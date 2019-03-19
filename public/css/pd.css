@@ -40,12 +40,12 @@ hr {
 .text-card-overlay {
   font-family: "Roboto", "Arial", sans-serif;
   font-size: 4em;
-  color: white;
-  text-shadow:
+  color: #5087B7;
+  /* text-shadow:
    -1px -1px 0 #000,
     1px -1px 0 #000,
     -1px 1px 0 #000,
-     1px 1px 0 #000;
+     1px 1px 0 #000; */
   padding-top: 0.9em;
 }
 
@@ -65,4 +65,25 @@ hr {
 
 .text-white {
   text-color: white;
+}
+
+#description {
+    min-height: 25em;
+}
+
+#description p {
+  font-size: 2em;
+}
+
+.footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0; */
+  height: 4em;
+  background-color: #5087B7;
+  color: white;
 }
