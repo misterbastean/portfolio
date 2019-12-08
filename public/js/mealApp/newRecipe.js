@@ -6,7 +6,7 @@ $(document).ready(function() {
         <input name="ingredients[` + ingredientCount + `][ingredientName]"" type="text" class="form-control" placeholder="e.g. Cinnamon">
       </div>
       <div class="col-md-2">
-        <input name="ingredients[` + ingredientCount + `][ingredientQuantity]" type="number" class="form-control" placeholder='#'>
+        <input name="ingredients[` + ingredientCount + `][ingredientQuantity]" type="text" class="form-control" placeholder='#'>
       </div>
       <div class="col-md-2">
         <select name="ingredients[` + ingredientCount + `][ingredientUnit]" class="form-control" placeholder="unit">

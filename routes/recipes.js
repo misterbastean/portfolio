@@ -115,7 +115,7 @@ router.post('/recipes', middleware.isLoggedIn, (req, res) => {
   req.body.ingredients.forEach((ingredient) => {
     ingredients.push({
       ingredientName: `${ingredient.ingredientName} ${ingredient.ingredientUnit}`,
-      ingredientQuantity: parseInt(ingredient.ingredientQuantity)
+      ingredientQuantity: parseFloat(ingredient.ingredientQuantity)
     });
   });
 
@@ -186,7 +186,7 @@ router.put('/recipes/:id', middleware.isLoggedIn, (req, res) => {
   req.body.ingredients.forEach((ingredient) => {
     ingredients.push({
       ingredientName: `${ingredient.ingredientName} ${ingredient.ingredientUnit}`,
-      ingredientQuantity: parseInt(ingredient.ingredientQuantity)
+      ingredientQuantity: parseFloat(ingredient.ingredientQuantity)
     });
   });
 
